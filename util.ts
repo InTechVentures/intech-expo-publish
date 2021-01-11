@@ -71,6 +71,9 @@ export async function fetchManifest(
   releaseChannel: string
 ) {
   try {
+    console.log(
+      `https://exp.host/@${process.env.EXPO_ACCOUNT}/${process.env.EXPO_APP}/index.exp?release-channel=${releaseChannel}&sdkVersion=${sdkVersion}`
+    );
     const response = await fetch(
       `https://exp.host/@${process.env.EXPO_ACCOUNT}/${process.env.EXPO_APP}/index.exp?release-channel=${releaseChannel}&sdkVersion=${sdkVersion}`
     );
@@ -106,12 +109,7 @@ export async function getBranchName() {
  * Revert original environment and stash app.json changes made by deployment
  */
 export async function cleanup(shouldStashChanges: boolean) {
-  // Rename/remove .env.backup file. If one isn't present ignore
-  try {
-    renameSync(".env.backup", ".env");
-  } catch {}
-
-  // Stash app.json changes
+  // Stash app.json and .env.production changes
   if (shouldStashChanges) await execute("git stash");
 }
 

@@ -34,8 +34,7 @@ export async function checkGit() {
  */
 export async function switchEnvironment(branchName: string) {
   // Switch environments
-  log("Backing up local environment...");
-  copyFileSync("./.env", ".env.backup");
+  log("Backing up production environment...");
 
   // Swap local .env for the correct one for the branch
   const useEnvironment = BRANCH_ENVIRONMENTS[branchName]
@@ -43,8 +42,8 @@ export async function switchEnvironment(branchName: string) {
     : DEFAULT_ENVIRONMENT;
 
   log(`Switching to environment '${useEnvironment.env}'...`);
-  copyFileSync(useEnvironment.env, ".env");
-  require("dotenv").config();
+  copyFileSync(useEnvironment.env, "./.env.production");
+  require("dotenv").config({ path: "./.env.production" });
 }
 
 /**
@@ -94,7 +93,7 @@ export async function bumpVersion(
   let manifest = await fetchManifest(sdkVersion, releaseChannel);
   if (!manifest) {
     log(
-      "Could not fetch latest published version for release channel '${releaseChannel}'\n" +
+      `Could not fetch latest published version for release channel '${releaseChannel}'\n` +
         "Fetching last published build on release channel 'default'"
     );
     manifest = await fetchManifest(sdkVersion, "default");
@@ -124,7 +123,8 @@ export async function publish(releaseChannel: string) {
     "expo",
     "publish",
     "--release-channel",
-    releaseChannel
+    releaseChannel,
+    "-c"
   );
 
   if (code !== 0)

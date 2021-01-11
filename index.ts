@@ -51,6 +51,7 @@ async function deploy(sdkVersion: string, releaseChannel: string) {
 
   await deploy(...verifyBuild).catch((error: string) => {
     console.log(error);
-    cleanup(true);
   });
+
+  cleanup(true);
 })();
