@@ -71,9 +71,6 @@ export async function fetchManifest(
   releaseChannel: string
 ) {
   try {
-    console.log(
-      `https://exp.host/@${process.env.EXPO_ACCOUNT}/${process.env.EXPO_APP}/index.exp?release-channel=${releaseChannel}&sdkVersion=${sdkVersion}`
-    );
     const response = await fetch(
       `https://exp.host/@${process.env.EXPO_ACCOUNT}/${process.env.EXPO_APP}/index.exp?release-channel=${releaseChannel}&sdkVersion=${sdkVersion}`
     );

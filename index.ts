@@ -13,9 +13,6 @@ import {
  * Check the build before publish to Expo and return the release channel
  */
 async function preliminaryChecks(): Promise<[string, string]> {
-  // Verify there aren't any git changes
-  await checkGit();
-
   // Fetch branch name and Sdk version
   const branchName = await getBranchName();
   const sdkVersion = await fetchSdkVersion();
@@ -42,9 +39,19 @@ async function deploy(sdkVersion: string, releaseChannel: string) {
 (async () => {
   log("\nBeginning deployment...");
 
-  const verifyBuild = await preliminaryChecks().catch((error: string) => {
+  // Verify there aren't any git changes
+  const gitCheck = await checkGit().catch((error: string) => {
     console.log(error);
     cleanup(false);
+  });
+
+  if (!gitCheck) {
+    return;
+  }
+
+  const verifyBuild = await preliminaryChecks().catch((error: string) => {
+    console.log(error);
+    cleanup(true);
   });
 
   if (!verifyBuild) return;

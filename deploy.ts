@@ -27,6 +27,8 @@ export async function checkGit() {
 
   if ((await execute("git rev-list @{upstream}.. -n 1")) !== "")
     return abort("Push your changes before deploying");
+
+  return true;
 }
 
 /**
