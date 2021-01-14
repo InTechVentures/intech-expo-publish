@@ -99,7 +99,7 @@ export function abort(error: string) {
  * Get the name of the current brnahc
  */
 export async function getBranchName() {
-  return await execute("git branch --show-current");
+  return (await execute("git branch --show-current")).trim();
 }
 
 /**
