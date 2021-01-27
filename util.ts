@@ -11,6 +11,7 @@ import { red, gray, blue } from "chalk";
 import fetch from "node-fetch";
 
 import { ISpawnProcess } from "./interfaces";
+import { BRANCH_ENVIRONMENTS } from "./config";
 
 /**
  * Run a command
@@ -82,7 +83,10 @@ export async function fetchManifest(
 }
 
 export async function getReleaseChannel(branchName: string): Promise<string> {
-  return (process.env.releaseChannel ? process.env.releaseChannel : branchName)
+  return (BRANCH_ENVIRONMENTS[branchName]
+    ? BRANCH_ENVIRONMENTS[branchName].releaseChannel
+    : branchName
+  )
     .replace(/\//g, "-")
     .trim();
 }
