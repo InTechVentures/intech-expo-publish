@@ -101,9 +101,17 @@ export async function bumpVersion(
     manifest = await fetchManifest(sdkVersion, "default");
   }
 
-  if (!manifest)
-    return abort("Could not fetch last published version from Expo.");
+  if (!manifest) {
+    log(
+      `Could not fetch last published version from Expo on default release channel.\n
+      Has a release on the default release channel happened on this SDK version?\n
+      Defaulting to version 1.0.0`
+    );
 
+    manifest = {
+      version: "1.0.0",
+    };
+  }
   // Bump version
   const newVersion = incrementVersion(manifest.version, "patch");
   log(`Bumping app version to ${newVersion}...`);

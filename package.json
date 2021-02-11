@@ -1,6 +1,6 @@
 {
   "name": "intech-expo-publish",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "main": "index.ts",
   "scripts": {
