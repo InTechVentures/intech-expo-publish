@@ -44,7 +44,12 @@ export async function switchEnvironment(branchName: string) {
     : DEFAULT_ENVIRONMENT;
 
   log(`Switching to environment '${useEnvironment.env}'...`);
-  copyFileSync(useEnvironment.env, "./.env.production");
+
+  // Don't copy to the same file - creates a blank file.
+  if (useEnvironment.env !== ".env.production") {
+    copyFileSync(useEnvironment.env, "./.env.production");
+  }
+
   require("dotenv").config({ path: "./.env.production" });
 }
 
